@@ -1,7 +1,7 @@
 CC=g++
 INCDIR=include/
 CFLAGS=-c -Wall -ggdb -I$(INCDIR)
-LDFLAGS=-lGL -lsfml-system -lsfml-window
+LDFLAGS=-lGL -lGLU -lsfml-system -lsfml-window
 SOURCES=$(wildcard src/*.cpp)
 OBJECTS=$(SOURCES:.cpp=.o)
 EXECUTABLE=SubdivisionSurfaces
