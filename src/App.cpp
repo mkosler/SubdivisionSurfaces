@@ -30,7 +30,7 @@ App::App(sf::VideoMode mode, std::string title)
 
   _focus.push_back(0);
   _focus.push_back(0);
-  _focus.push_back(-3.5);
+  _focus.push_back(-1.5);
 }
 
 App::~App()
@@ -122,7 +122,7 @@ void App::handleMouseMoved(sf::Event::MouseMoveEvent &event)
     _focus[0] += 0.005f * dx;
     _focus[1] += 0.005f * dy;
   } else if (_window.GetInput().IsMouseButtonDown(sf::Mouse::Right)) {
-    _focus[2] += 0.005f * dy;
+    _focus[2] += 0.01f * dy;
   }
 
   _previousMouse.first = x;
