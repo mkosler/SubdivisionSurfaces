@@ -88,7 +88,13 @@ void App::handleKeyPressed(sf::Event::KeyEvent &event)
 {
   switch (event.Code) {
     case sf::Key::L:
-      _model = Model::load("assets/cube3.obj");
+      {
+        std::string filename;
+        std::cout << "Enter the filename: ";
+        std::cin >> filename;
+
+        _model = Model::load(filename);
+      }
       break;
     case sf::Key::Escape:
       _window.Close();
