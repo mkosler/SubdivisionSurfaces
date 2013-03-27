@@ -33,6 +33,37 @@ App::App(sf::VideoMode mode, std::string title)
   _focus.push_back(-1.5);
 }
 
+App::App(sf::VideoMode mode, std::string title, std::string filename)
+  : _previousMouse(std::pair<int, int>(0, 0)),
+    _model(Model::load(filename))
+{
+  _window.Create(mode, title);
+
+  _rotationMatrix.push_back(1);
+  _rotationMatrix.push_back(0);
+  _rotationMatrix.push_back(0);
+  _rotationMatrix.push_back(0);
+  
+  _rotationMatrix.push_back(0);
+  _rotationMatrix.push_back(1);
+  _rotationMatrix.push_back(0);
+  _rotationMatrix.push_back(0);
+
+  _rotationMatrix.push_back(0);
+  _rotationMatrix.push_back(0);
+  _rotationMatrix.push_back(1);
+  _rotationMatrix.push_back(0);
+
+  _rotationMatrix.push_back(0);
+  _rotationMatrix.push_back(0);
+  _rotationMatrix.push_back(0);
+  _rotationMatrix.push_back(1);
+
+  _focus.push_back(0);
+  _focus.push_back(0);
+  _focus.push_back(-1.5);
+}
+
 App::~App()
 {
 }
@@ -87,7 +118,7 @@ void App::handleResized(sf::Event::SizeEvent &event)
 void App::handleKeyPressed(sf::Event::KeyEvent &event)
 {
   switch (event.Code) {
-    case sf::Key::L:
+    case sf::Key::O:
       {
         std::string filename;
         std::cout << "Enter the filename: ";

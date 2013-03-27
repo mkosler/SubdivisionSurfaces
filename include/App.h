@@ -34,6 +34,7 @@ class App
 
   public:
     App(sf::VideoMode mode, std::string title);
+    App(sf::VideoMode mode, std::string title, std::string filename);
     ~App();
 
     int run();
