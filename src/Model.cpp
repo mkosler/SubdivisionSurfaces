@@ -12,9 +12,17 @@ Model::~Model()
 {
 }
 
-Vertex Model::getNormal(Vertex v)
+Vertex Model::getFaceNormal(Vertex v1, Vertex v2, Vertex v3) const
 {
+  Vertex vec1 = v3 - v2;
+  Vertex vec2 = v1 - v2;
+
   Vertex normal;
+  normal[0] = vec1[1] * vec2[2] - vec1[2] * vec2[1];
+  normal[1] = vec1[2] * vec2[0] - vec1[0] * vec2[2];
+  normal[2] = vec1[0] * vec2[1] - vec1[1] * vec2[0];
+
+  normal.normalize();
 
   return normal;
 }
@@ -30,6 +38,9 @@ void Model::draw() const
              vy = _vertexes[f[1] - 1],
              vz = _vertexes[f[2] - 1],
              vw = _vertexes[f[3] - 1];
+
+      Vertex normal = getFaceNormal(vx, vy, vz);
+      glNormal3f(normal[0], normal[1], normal[2]);
 
       glVertex3f(vx[0], vx[1], vx[2]);
       glVertex3f(vy[0], vy[1], vy[2]);

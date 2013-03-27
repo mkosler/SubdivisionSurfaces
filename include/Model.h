@@ -15,7 +15,7 @@ class Model
     std::vector<Vertex> _vertexes;
     std::vector<Face> _faces;
 
-    Vertex getNormal(Vertex v);
+    Vertex getFaceNormal(Vertex v1, Vertex v2, Vertex v3) const;
 
   public:
     Model();
