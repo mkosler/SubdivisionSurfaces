@@ -92,7 +92,7 @@ void SSApp::handleResized(sf::Event::SizeEvent &event)
 void SSApp::handleKeyPressed(sf::Event::KeyEvent &event)
 {
   switch (event.Code) {
-    case sf::Key::L:
+    case sf::Key::O:
       {
         std::string filename;
         std::cout << "Enter the filename: ";
@@ -166,7 +166,12 @@ void SSApp::draw()
   glTranslatef(_focus[0], _focus[1], _focus[2]);
   glMultMatrixf(&_rotationMatrix[0]);
 
-  _model.draw();
+  //_model.draw();
+
+  glColor3f(1.0f, 0.0f, 0.0f);
+  glBegin(GL_POINTS);
+    glVertex2f(_window.GetWidth() / 2, _window.GetHeight() / 2);
+  glEnd();
 
   _window.Display();
 }

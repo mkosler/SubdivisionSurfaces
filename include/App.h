@@ -94,6 +94,7 @@ class App
 
     virtual ~App()
     {
+      _window.Close();
     }
 
     int run()
