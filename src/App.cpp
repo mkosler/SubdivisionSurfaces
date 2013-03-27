@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "App.h"
+#include "Model.h"
 
 App::App(sf::VideoMode mode, std::string title)
   : _previousMouse(std::pair<int, int>(0, 0))
@@ -83,6 +84,11 @@ void App::handleResized(sf::Event::SizeEvent &event)
 void App::handleKeyPressed(sf::Event::KeyEvent &event)
 {
   switch (event.Code) {
+    case sf::Key::L:
+      {
+        Model m = Model::load("assets/cube3.obj");
+      }
+      break;
     case sf::Key::Escape:
       _window.Close();
       break;
