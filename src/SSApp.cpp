@@ -151,7 +151,7 @@ void SSApp::update(float dt)
 {
 }
 
-void SSApp::draw() const
+void SSApp::draw()
 {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -167,4 +167,6 @@ void SSApp::draw() const
   glMultMatrixf(&_rotationMatrix[0]);
 
   _model.draw();
+
+  _window.Display();
 }

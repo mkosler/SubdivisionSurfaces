@@ -42,7 +42,7 @@ class SSApp
     void handleJoyMoved(sf::Event::JoyMoveEvent &event) { }
 
     void update(float dt);
-    void draw() const;
+    void draw();
 
   public:
     SSApp(sf::VideoMode mode, std::string title);

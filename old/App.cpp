@@ -174,7 +174,6 @@ int App::run()
     }
 
     update(_window.GetFrameTime());
-
     draw();
   }
 

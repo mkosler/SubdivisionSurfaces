@@ -1,6 +1,8 @@
 #ifndef _APP_H_
 #define _APP_H_
 
+#include <iostream>
+
 #include <SFML/Window.hpp>
 
 class App
@@ -82,7 +84,7 @@ class App
     virtual void handleJoyMoved(sf::Event::JoyMoveEvent &event) = 0;
 
     virtual void update(float dt) = 0;
-    virtual void draw() const = 0;
+    virtual void draw() = 0;
 
   public:
     App(sf::VideoMode mode, std::string title)
@@ -107,8 +109,6 @@ class App
 
         update(_window.GetFrameTime());
         draw();
-
-        _window.Display();
       }
 
       return 0;
