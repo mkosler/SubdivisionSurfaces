@@ -112,7 +112,7 @@ void App::handleMousePressed(sf::Event::MouseButtonEvent &event)
 void App::handleMouseMoved(sf::Event::MouseMoveEvent &event)
 {
   int x = event.X,
-      y = _window.GetHeight() - event.X;
+      y = _window.GetHeight() - event.Y;
 
   float dx = x - _previousMouse.first,
         dy = y - _previousMouse.second;
