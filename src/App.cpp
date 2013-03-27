@@ -30,7 +30,7 @@ App::App(sf::VideoMode mode, std::string title)
 
   _focus.push_back(0);
   _focus.push_back(0);
-  _focus.push_back(-1.5);
+  _focus.push_back(-3.5);
 }
 
 App::~App()
@@ -46,6 +46,9 @@ void App::initialize()
   glClearColor(0, 0, 0, 1);
 
   glEnable(GL_DEPTH_TEST);
+
+  glShadeModel(GL_FLAT);
+
   glEnable(GL_LIGHT0);
   glEnable(GL_LIGHTING);
 
@@ -85,10 +88,7 @@ void App::handleKeyPressed(sf::Event::KeyEvent &event)
 {
   switch (event.Code) {
     case sf::Key::L:
-      {
-        Model m = Model::load("assets/cube3.obj");
-        std::cout << m << std::endl;
-      }
+      _model = Model::load("assets/cube3.obj");
       break;
     case sf::Key::Escape:
       _window.Close();
@@ -147,6 +147,8 @@ void App::draw()
 
   glTranslatef(_focus[0], _focus[1], _focus[2]);
   glMultMatrixf(&_rotationMatrix[0]);
+
+  _model.draw();
 
   _window.Display();
 }

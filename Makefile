@@ -14,4 +14,7 @@ $(EXECUTABLE): $(OBJECTS)
 .cpp.o:
 	$(CC) $(CFLAGS) $< -o $@
 
-.PHONY: all
+clean:
+	rm $(OBJECTS) $(EXECUTABLE)
+
+.PHONY: all clean
