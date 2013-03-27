@@ -60,14 +60,15 @@ Model Model::load(std::string filename)
     throw std::runtime_error("Unable to open file: " + filename);
   }
 
-  while (!ifs.eof()) {
-    std::string line;
-    std::getline(ifs, line);
-
+  std::string line;
+  while (std::getline(ifs, line)) {
     std::istringstream iss(line);
-    char flag;
 
-    iss >> flag;
+    char flag;
+    if (!(iss >> flag)) {
+      break;
+    }
+
     switch (flag) {
       case '#':
         // Ignore this whole line

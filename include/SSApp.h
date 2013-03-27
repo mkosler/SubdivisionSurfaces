@@ -46,6 +46,7 @@ class SSApp
 
   public:
     SSApp(sf::VideoMode mode, std::string title);
+    SSApp(sf::VideoMode mode, std::string title, std::string filename);
     ~SSApp();
 };
 

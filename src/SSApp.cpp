@@ -31,6 +31,36 @@ SSApp::SSApp(sf::VideoMode mode, std::string title)
   _focus.push_back(-1.5);
 }
 
+SSApp::SSApp(sf::VideoMode mode, std::string title, std::string filename)
+  : App(mode, title),
+    _previousMouse(std::pair<int, int>(0, 0)),
+    _model(Model::load(filename))
+{
+  _rotationMatrix.push_back(1);
+  _rotationMatrix.push_back(0);
+  _rotationMatrix.push_back(0);
+  _rotationMatrix.push_back(0);
+  
+  _rotationMatrix.push_back(0);
+  _rotationMatrix.push_back(1);
+  _rotationMatrix.push_back(0);
+  _rotationMatrix.push_back(0);
+
+  _rotationMatrix.push_back(0);
+  _rotationMatrix.push_back(0);
+  _rotationMatrix.push_back(1);
+  _rotationMatrix.push_back(0);
+
+  _rotationMatrix.push_back(0);
+  _rotationMatrix.push_back(0);
+  _rotationMatrix.push_back(0);
+  _rotationMatrix.push_back(1);
+
+  _focus.push_back(0);
+  _focus.push_back(0);
+  _focus.push_back(-1.5);
+}
+
 SSApp::~SSApp()
 {
 }
@@ -77,6 +107,9 @@ void SSApp::handleKeyPressed(sf::Event::KeyEvent &event)
       break;
     case sf::Key::Escape:
       _window.Close();
+      break;
+    case sf::Key::Space:
+      std::cout << _model << std::endl;
       break;
     default:
       break;
