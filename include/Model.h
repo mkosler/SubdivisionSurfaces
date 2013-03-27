@@ -14,7 +14,7 @@ class Model
 
     struct Face
     {
-      int X, Y, Z, W;
+      int x, y, z, w;
     };
 
   private:
@@ -24,6 +24,8 @@ class Model
   public:
     Model();
     ~Model();
+
+    void draw() const;
 
     static Model load(std::string filename);
     static void save(Model model, std::string filename);

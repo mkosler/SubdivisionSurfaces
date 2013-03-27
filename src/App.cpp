@@ -87,6 +87,7 @@ void App::handleKeyPressed(sf::Event::KeyEvent &event)
     case sf::Key::L:
       {
         Model m = Model::load("assets/cube3.obj");
+        std::cout << m << std::endl;
       }
       break;
     case sf::Key::Escape:
@@ -144,43 +145,9 @@ void App::draw()
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
 
-  glTranslatef(0.0f, 0.0f, -1.5f);
+  glTranslatef(_focus[0], _focus[1], _focus[2]);
   glMultMatrixf(&_rotationMatrix[0]);
 
-  glColor3f(1, 0, 0);
-  glBegin(GL_QUADS);
-    glVertex3f(-1.f, -1.f, -1.f);
-    glVertex3f(-1.f,  1.f, -1.f);
-    glVertex3f( 1.f,  1.f, -1.f);
-    glVertex3f( 1.f, -1.f, -1.f);
-
-    glVertex3f(-1.f, -1.f, 1.f);
-    glVertex3f(-1.f,  1.f, 1.f);
-    glVertex3f( 1.f,  1.f, 1.f);
-    glVertex3f( 1.f, -1.f, 1.f);
-
-    glVertex3f(-1.f, -1.f, -1.f);
-    glVertex3f(-1.f,  1.f, -1.f);
-    glVertex3f(-1.f,  1.f,  1.f);
-    glVertex3f(-1.f, -1.f,  1.f);
-
-    glVertex3f(1.f, -1.f, -1.f);
-    glVertex3f(1.f,  1.f, -1.f);
-    glVertex3f(1.f,  1.f,  1.f);
-    glVertex3f(1.f, -1.f,  1.f);
-
-    glVertex3f(-1.f, -1.f,  1.f);
-    glVertex3f(-1.f, -1.f, -1.f);
-    glVertex3f( 1.f, -1.f, -1.f);
-    glVertex3f( 1.f, -1.f,  1.f);
-
-    glVertex3f(-1.f, 1.f,  1.f);
-    glVertex3f(-1.f, 1.f, -1.f);
-    glVertex3f( 1.f, 1.f, -1.f);
-    glVertex3f( 1.f, 1.f,  1.f);
-  glEnd();
-
-  glFlush();
   _window.Display();
 }
 

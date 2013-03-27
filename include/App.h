@@ -7,6 +7,8 @@
 
 #include <SFML/Window.hpp>
 
+#include "Model.h"
+
 class App
 {
   private:
@@ -15,6 +17,8 @@ class App
 
     std::vector<float> _focus;
     std::vector<float> _rotationMatrix;
+
+    Model _model;
 
     void initialize();
 
