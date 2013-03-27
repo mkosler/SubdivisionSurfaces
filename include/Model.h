@@ -17,6 +17,8 @@ class Model
 
     Vertex getFaceNormal(Vertex v1, Vertex v2, Vertex v3) const;
 
+    std::vector<Face> subdivide(std::vector<Vertex> vertexes, std::vector<Face> faces);
+
   public:
     Model();
     ~Model();

@@ -123,6 +123,11 @@ class Point
     {
       return _data[i];
     }
+
+    int size()
+    {
+      return n;
+    }
 };
 
 // Define the common types for this project

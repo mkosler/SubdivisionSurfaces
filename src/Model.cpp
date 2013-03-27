@@ -1,7 +1,10 @@
+#include <algorithm>
 #include <iostream>
 #include <fstream>
+#include <map>
 #include <sstream>
 #include <stdexcept>
+#include <utility>
 
 #include "Model.h"
 
@@ -26,6 +29,31 @@ Vertex Model::getFaceNormal(Vertex v1, Vertex v2, Vertex v3) const
   normal.normalize();
 
   return normal;
+}
+
+std::vector<Face> Model::subdivide(std::vector<Vertex> vertexes, std::vector<Face> faces)
+{
+  std::vector<Face> nFaces;
+  std::map<std::pair<int, int>, int> hash;
+
+  for (size_t i = 0; i < faces.size(); i++) {
+    Face f = faces[i];
+
+    float e[4] = { 0 };
+    for (size_t j = 0; j < 4; j++) {
+      std::pair<int, int> p =
+        std::make_pair(std::min(f[j], f[(j + 1) % f.size()]),
+                       std::min(f[j], f[(j + 1) % f.size()]));
+
+      std::map<std::pair<int, int>, int>::iterator it = hash.find(p);
+      if (it == hash.end()) {
+        vertexes.push_back((vertexes[p.first - 1] + vertexes[p.second - 1]) / 2.0f);
+        hash[p] = vertexes.size();
+      }
+
+      e[j] = hash[p];
+    }
+  }
 }
 
 void Model::draw() const
