@@ -7,19 +7,15 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "Point.h"
+
 class Model
 {
-  public:
-    typedef sf::Vector3<float> Vertex;
-
-    struct Face
-    {
-      int x, y, z, w;
-    };
-
   private:
     std::vector<Vertex> _vertexes;
     std::vector<Face> _faces;
+
+    Vertex getNormal(Vertex v);
 
   public:
     Model();

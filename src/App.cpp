@@ -47,7 +47,7 @@ void App::initialize()
 
   glEnable(GL_DEPTH_TEST);
 
-  glShadeModel(GL_FLAT);
+  glShadeModel(GL_SMOOTH);
 
   glEnable(GL_LIGHT0);
   glEnable(GL_LIGHTING);

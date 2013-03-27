@@ -12,6 +12,13 @@ Model::~Model()
 {
 }
 
+Vertex Model::getNormal(Vertex v)
+{
+  Vertex normal;
+
+  return normal;
+}
+
 void Model::draw() const
 {
   glColor3f(1.0f, 1.0f, 1.0f);
@@ -19,15 +26,15 @@ void Model::draw() const
     for (size_t i = 0; i < _faces.size(); i++) {
       Face f = _faces[i];
 
-      Vertex vx = _vertexes[f.x - 1],
-             vy = _vertexes[f.y - 1],
-             vz = _vertexes[f.z - 1],
-             vw = _vertexes[f.w - 1];
+      Vertex vx = _vertexes[f[0] - 1],
+             vy = _vertexes[f[1] - 1],
+             vz = _vertexes[f[2] - 1],
+             vw = _vertexes[f[3] - 1];
 
-      glVertex3f(vx.x, vx.y, vx.z);
-      glVertex3f(vy.x, vy.y, vy.z);
-      glVertex3f(vz.x, vz.y, vz.z);
-      glVertex3f(vw.x, vw.y, vw.z);
+      glVertex3f(vx[0], vx[1], vx[2]);
+      glVertex3f(vy[0], vy[1], vy[2]);
+      glVertex3f(vz[0], vz[1], vz[2]);
+      glVertex3f(vw[0], vw[1], vw[2]);
     }
   glEnd();
 }
@@ -52,14 +59,14 @@ Model Model::load(std::string filename)
       case 'v':
         {
           Vertex v;
-          iss >> v.x >> v.y >> v.z;
+          iss >> v[0] >> v[1] >> v[2];
           m._vertexes.push_back(v);
         }
         break;
       case 'f':
         {
           Face f;
-          iss >> f.x >> f.y >> f.z >> f.w;
+          iss >> f[0] >> f[1] >> f[2] >> f[3];
           m._faces.push_back(f);
         }
         break;
@@ -82,14 +89,14 @@ std::ostream &operator<<(std::ostream &os, const Model &m)
 {
   os << "### Vertexes (" << m._vertexes.size() << ") ###" << std::endl;
   for (size_t i = 0; i < m._vertexes.size(); i++) {
-    Model::Vertex v = m._vertexes[i];
-    os << v.x << ' ' << v.y << ' ' << v.z << std::endl;
+    Vertex v = m._vertexes[i];
+    os << v[0] << ' ' << v[1] << ' ' << v[2] << std::endl;
   }
 
   os << "### Faces (" << m._faces.size() << ") ###" << std::endl;
   for (size_t i = 0; i < m._faces.size(); i++) {
-    Model::Face f = m._faces[i];
-    os << f.x << ' ' << f.y << ' ' << f.z << ' ' << f.w << std::endl;
+    Face f = m._faces[i];
+    os << f[0] << ' ' << f[1] << ' ' << f[2] << ' ' << f[3] << std::endl;
   }
 
   return os;
