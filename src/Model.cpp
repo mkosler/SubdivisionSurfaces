@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <stdexcept>
 
 #include "Model.h"
 
@@ -55,6 +56,10 @@ Model Model::load(std::string filename)
   Model m;
 
   std::ifstream ifs(filename.c_str());
+  if (!ifs.is_open()) {
+    throw std::runtime_error("Unable to open file: " + filename);
+  }
+
   while (!ifs.eof()) {
     std::string line;
     std::getline(ifs, line);
@@ -82,7 +87,7 @@ Model Model::load(std::string filename)
         }
         break;
       default:
-        std::cerr << "Unknown flag: " << line[0] << std::endl;
+        throw std::runtime_error("Unknown flag for simple .obj: " + flag);
         break;
     }
   }

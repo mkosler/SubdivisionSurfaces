@@ -93,7 +93,11 @@ void App::handleKeyPressed(sf::Event::KeyEvent &event)
         std::cout << "Enter the filename: ";
         std::cin >> filename;
 
-        _model = Model::load(filename);
+        try {
+          _model = Model::load(filename);
+        } catch (std::exception &e) {
+          std::cerr << e.what() << std::endl;
+        }
       }
       break;
     case sf::Key::Escape:
