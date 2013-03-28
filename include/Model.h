@@ -16,12 +16,14 @@ class Model
     std::vector<Face> _faces;
 
     Vertex getFaceNormal(Vertex v1, Vertex v2, Vertex v3) const;
-
-    std::vector<Face> subdivide(std::vector<Vertex> vertexes, std::vector<Face> faces);
+    Vertex getCentroid(Vertex v1, Vertex v2, Vertex v3, Vertex v4) const;
 
   public:
     Model();
     ~Model();
+
+    std::vector<Face> subdivide(std::vector<Vertex> &vertexes, std::vector<Face> faces);
+    std::vector<Vertex> average(std::vector<Vertex> vertexes, std::vector<Face> &faces);
 
     void draw() const;
 
