@@ -98,6 +98,9 @@ std::vector<Vertex> Model::average(std::vector<Vertex> vertexes, std::vector<Fac
 {
   std::vector<Vertex> nVertexes(vertexes.size(), 0);
   std::vector<unsigned> valence(vertexes.size(), 0);
+
+  for (size_t i = 0; i < faces.size(); i++) {
+  }
 }
 
 void Model::draw() const
