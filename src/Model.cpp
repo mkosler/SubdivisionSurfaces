@@ -33,20 +33,24 @@ Vertex Model::getFaceNormal(Vertex v1, Vertex v2, Vertex v3) const
 
 Vertex Model::getCentroid(Vertex v1, Vertex v2, Vertex v3, Vertex v4) const
 {
-  std::vector<Vertex> tc;
-  tc.push_back((v1 + v2 + v3) / 3.0f);
-  tc.push_back((v1 + v3 + v4) / 3.0f);
-  tc.push_back((v1 + v2 + v4) / 3.0f);
-  tc.push_back((v2 + v3 + v4) / 3.0f);
+  float bx = v2[0] - v1[0];
+  float by = v2[1] - v1[1];
+  float bz = v2[2] - v1[2];
 
-  // Find intersection
-  Vertex b = tc[1] - tc[0];
-  Vertex d = tc[3] - tc[2];
-  Vertex c = tc[2] - tc[0];
+  float dx = v4[0] - v3[0];
+  float dy = v4[1] - v3[1];
 
-  float t = (c[0] * d[1] - c[1] * d[0]) / (b[0] * d[1] - b[1] * d[0]);
+  float cx = v3[0] - v1[0];
+  float cy = v3[1] - v1[1];
 
-  Vertex centroid = tc[0] + (b * t);
+  float t = (cx * dy - cy * dx) / (bx * dy - by * dx);
+
+  Vertex centroid;
+  centroid[0] = v1[0] + t * bx;
+  centroid[1] = v1[1] + t * by;
+  centroid[2] = v1[2] + t * bz;
+
+  return centroid;
 }
 
 std::vector<Face> Model::subdivide(std::vector<Vertex> &vertexes, std::vector<Face> faces)
@@ -57,11 +61,14 @@ std::vector<Face> Model::subdivide(std::vector<Vertex> &vertexes, std::vector<Fa
   for (size_t i = 0; i < faces.size(); i++) {
     Face f = faces[i];
 
+    std::cout << "Face [" << i << "]: { "
+              << f[0] << ", " << f[1] << ", " << f[2] << ", " << f[3] << " }" << std::endl;
+
     unsigned e[4] = { 0 };
     for (size_t j = 0; j < 4; j++) {
       std::pair<int, int> p =
         std::make_pair(std::min(f[j], f[(j + 1) % f.size()]),
-                       std::min(f[j], f[(j + 1) % f.size()]));
+                       std::max(f[j], f[(j + 1) % f.size()]));
 
       std::map<std::pair<int, int>, int>::iterator it = hash.find(p);
       if (it == hash.end()) {
@@ -83,9 +90,9 @@ std::vector<Face> Model::subdivide(std::vector<Vertex> &vertexes, std::vector<Fa
     for (size_t j = 0; j < 4; j++) {
       float ff[4] = {
         f[j],
-        e[j],
-        c,
-        e[(j - 1) % 4]
+        static_cast<float>(e[j]),
+        static_cast<float>(c),
+        static_cast<float>(e[(j - 1) % 4])
       };
       nFaces.push_back(Face(ff));
     }
@@ -101,6 +108,16 @@ std::vector<Vertex> Model::average(std::vector<Vertex> vertexes, std::vector<Fac
 
   for (size_t i = 0; i < faces.size(); i++) {
   }
+}
+
+void Model::performSubdivision()
+{
+  _faces = subdivide(_vertexes, _faces);
+}
+
+void Model::performAveraging()
+{
+  _vertexes = average(_vertexes, _faces);
 }
 
 void Model::draw() const

@@ -118,6 +118,9 @@ void App::handleResized(sf::Event::SizeEvent &event)
 void App::handleKeyPressed(sf::Event::KeyEvent &event)
 {
   switch (event.Code) {
+    case sf::Key::L:
+      _model.performSubdivision();
+      break;
     case sf::Key::O:
       {
         std::string filename;
