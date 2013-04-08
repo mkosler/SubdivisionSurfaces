@@ -118,6 +118,9 @@ void App::handleResized(sf::Event::SizeEvent &event)
 void App::handleKeyPressed(sf::Event::KeyEvent &event)
 {
   switch (event.Code) {
+    case sf::Key::A:
+      _model.performAveraging();
+      break;
     case sf::Key::L:
       _model.performSubdivision();
       break;
@@ -136,6 +139,13 @@ void App::handleKeyPressed(sf::Event::KeyEvent &event)
       break;
     case sf::Key::Escape:
       _window.Close();
+      break;
+    case sf::Key::Space:
+      std::cout << _model << std::endl;
+      break;
+    case sf::Key::Add:
+      _model.performSubdivision();
+      _model.performAveraging();
       break;
     default:
       break;

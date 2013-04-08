@@ -33,24 +33,7 @@ Vertex Model::getFaceNormal(Vertex v1, Vertex v2, Vertex v3) const
 
 Vertex Model::getCentroid(Vertex v1, Vertex v2, Vertex v3, Vertex v4) const
 {
-  float bx = v2[0] - v1[0];
-  float by = v2[1] - v1[1];
-  float bz = v2[2] - v1[2];
-
-  float dx = v4[0] - v3[0];
-  float dy = v4[1] - v3[1];
-
-  float cx = v3[0] - v1[0];
-  float cy = v3[1] - v1[1];
-
-  float t = (cx * dy - cy * dx) / (bx * dy - by * dx);
-
-  Vertex centroid;
-  centroid[0] = v1[0] + t * bx;
-  centroid[1] = v1[1] + t * by;
-  centroid[2] = v1[2] + t * bz;
-
-  return centroid;
+  return (v1 + v2 + v3 + v4) / 4.0f;
 }
 
 std::vector<Face> Model::subdivide(std::vector<Vertex> &vertexes, std::vector<Face> faces)
@@ -60,9 +43,6 @@ std::vector<Face> Model::subdivide(std::vector<Vertex> &vertexes, std::vector<Fa
 
   for (size_t i = 0; i < faces.size(); i++) {
     Face f = faces[i];
-
-    std::cout << "Face [" << i << "]: { "
-              << f[0] << ", " << f[1] << ", " << f[2] << ", " << f[3] << " }" << std::endl;
 
     unsigned e[4] = { 0 };
     for (size_t j = 0; j < 4; j++) {
@@ -82,8 +62,8 @@ std::vector<Face> Model::subdivide(std::vector<Vertex> &vertexes, std::vector<Fa
     vertexes.push_back(
       getCentroid(
         vertexes[e[0] - 1],
-        vertexes[e[1] - 1],
         vertexes[e[2] - 1],
+        vertexes[e[1] - 1],
         vertexes[e[3] - 1]));
     unsigned c = vertexes.size();
 
@@ -103,11 +83,28 @@ std::vector<Face> Model::subdivide(std::vector<Vertex> &vertexes, std::vector<Fa
 
 std::vector<Vertex> Model::average(std::vector<Vertex> vertexes, std::vector<Face> &faces)
 {
-  std::vector<Vertex> nVertexes(vertexes.size(), 0);
+  std::vector<Vertex> nVertexes(vertexes.size(), Vertex());
   std::vector<unsigned> valence(vertexes.size(), 0);
 
   for (size_t i = 0; i < faces.size(); i++) {
+    Face f = faces[i];
+    Vertex centroid = getCentroid(
+        vertexes[f[0] - 1],
+        vertexes[f[1] - 1],
+        vertexes[f[2] - 1],
+        vertexes[f[3] - 1]);
+
+    for (size_t j = 0; j < 4; j++) {
+      nVertexes[f[j] - 1] += centroid;
+      valence[f[j] - 1]++;
+    }
   }
+
+  for (size_t i = 0; i < nVertexes.size(); i++) {
+    nVertexes[i] /= valence[i];
+  }
+
+  return nVertexes;
 }
 
 void Model::performSubdivision()
@@ -122,25 +119,34 @@ void Model::performAveraging()
 
 void Model::draw() const
 {
-  glColor3f(1.0f, 1.0f, 1.0f);
-  glBegin(GL_QUADS);
-    for (size_t i = 0; i < _faces.size(); i++) {
-      Face f = _faces[i];
+  glLineWidth(10.0f);
+  for (size_t i = 0; i < _faces.size(); i++) {
+    Face f = _faces[i];
 
-      Vertex vx = _vertexes[f[0] - 1],
-             vy = _vertexes[f[1] - 1],
-             vz = _vertexes[f[2] - 1],
-             vw = _vertexes[f[3] - 1];
+    Vertex vx = _vertexes[f[0] - 1],
+           vy = _vertexes[f[1] - 1],
+           vz = _vertexes[f[2] - 1],
+           vw = _vertexes[f[3] - 1];
 
-      Vertex normal = getFaceNormal(vx, vy, vz);
-      glNormal3f(normal[0], normal[1], normal[2]);
+    Vertex normal = getFaceNormal(vx, vy, vz);
+    glNormal3f(normal[0], normal[1], normal[2]);
 
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glBegin(GL_QUADS);
       glVertex3f(vx[0], vx[1], vx[2]);
       glVertex3f(vy[0], vy[1], vy[2]);
       glVertex3f(vz[0], vz[1], vz[2]);
       glVertex3f(vw[0], vw[1], vw[2]);
-    }
-  glEnd();
+    glEnd();
+
+    //glColor3f(1.0f, 0.0f, 0.0f);
+    //glBegin(GL_LINE_LOOP);
+      //glVertex3f(vx[0], vx[1], vx[2]);
+      //glVertex3f(vy[0], vy[1], vy[2]);
+      //glVertex3f(vz[0], vz[1], vz[2]);
+      //glVertex3f(vw[0], vw[1], vw[2]);
+    //glEnd();
+  }
 }
 
 Model Model::load(std::string filename)
@@ -152,14 +158,14 @@ Model Model::load(std::string filename)
     throw std::runtime_error("Unable to open file: " + filename);
   }
 
-  while (!ifs.eof()) {
-    std::string line;
-    std::getline(ifs, line);
-
+  std::string line;
+  while (std::getline(ifs, line)) {
     std::istringstream iss(line);
-    char flag;
 
-    iss >> flag;
+    char flag;
+    if (!(iss >> flag)) {
+      break;
+    }
     switch (flag) {
       case '#':
         // Ignore this whole line
